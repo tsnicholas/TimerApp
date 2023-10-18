@@ -6,11 +6,21 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerMenu">;
 
-export default function TimerMenu({ route }: Props) {
+export default function TimerMenu({ route, navigation }: Props) {
     const [timerName, setTimerName] = useState(route.params.timer.name);
     const [duration, setTimerDuration] = useState<Duration>(route.params.timer.length);
 
-    console.log("Timer Menu Rendered!");
+    function handleConfirmation() {
+        route.params.onDataChangeRequest({
+            id: route.params.timer.id, 
+            name: timerName, 
+            timerTurnedOn: false, 
+            length: duration, 
+            duration: {minute: duration.minute, second: duration.second},
+        })
+        navigation.goBack();
+    }
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.avoidingView}>
             <View style={styles.TimerInput}>
@@ -36,13 +46,7 @@ export default function TimerMenu({ route }: Props) {
                     keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
                 />
             </View>
-            <Button title="Confirm" onPress={() => {route.params.onDataChangeRequest({
-                id: route.params.timer.id, 
-                name: timerName, 
-                timerTurnedOn: false, 
-                length: duration, 
-                duration: {minute: duration.minute, second: duration.second},
-            })}}/>
+            <Button title="Confirm" onPress={() => {handleConfirmation}}/>
         </KeyboardAvoidingView>
     );
 }

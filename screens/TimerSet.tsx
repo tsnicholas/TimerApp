@@ -3,14 +3,15 @@ import { View, ScrollView, Button } from "react-native";
 import { RootStackParams, Timer } from "../types";
 import TimerView from "../components/TimerView";
 import styles from "../styles";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/core";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { genid } from "../utils";
+import { TitleText } from "../shared";
 
-export default function TimerSet() {
+type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
+
+export default function TimerSet({navigation, route}: Props) {
     const [timerSet, setTimerSet] = useState<Timer[]>([]);
     const [numOfTimers, setNumberOfTimers] = useState(0);
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
     
     useEffect(() => {
         const timer = {
@@ -51,12 +52,11 @@ export default function TimerSet() {
     
     return (
         <View style={styles.app}>
+            <TitleText>{route.params?.timerSet.name}</TitleText>
             <ScrollView style={styles.scrollContainer}>
                 {timers}
             </ScrollView>
-            <View style={{flexDirection: "row"}}>
-                <Button title="Add Timer" onPress={() => {setNumberOfTimers(numOfTimers + 1)}}/>
-            </View>
+            <Button title="Add Timer" onPress={() => {setNumberOfTimers(numOfTimers + 1)}}/>
         </View>
     )
 }

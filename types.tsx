@@ -12,11 +12,14 @@ export interface Timer {
 }
 
 export interface TimerSet {
+    id: string;
     name: string;
     timers: Timer[];
 }
 
 export type RootStackParams = {
+    TimerSets: undefined;
+    
     TimerSet: {
         timerSet: TimerSet
     };
