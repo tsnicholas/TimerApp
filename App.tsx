@@ -1,29 +1,19 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native"
+import TimerSet from "./screens/TimerSet";
+import TimerMenu from "./screens/TimerMenu";
+import { RootStackParams } from "./types";
 
-/**
- * Replace this file with your code from Project 1.
- */
+const Stack = createStackNavigator<RootStackParams>();
 
 export default function App() {
   return (
-    <View style={styles.app}>
-      <Text style={styles.title}>Project 2</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="TimerSet">
+        <Stack.Screen name="TimerSet" component={TimerSet}/>
+        <Stack.Screen name="TimerMenu" component={TimerMenu}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-  },
-  app: {
-    flex: 1,
-    paddingTop: 60,
-    paddingBottom: 20,
-    backgroundColor: "#85f0f0",
-    alignItems: "center",
-  },
-});
