@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Platform, KeyboardAvoidingView, Button } from "react-native";
+import { View, Text, TextInput, Platform, KeyboardAvoidingView, Button, StyleSheet } from "react-native";
 import { Duration, RootStackParams } from "../types";
-import styles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerMenu">;
@@ -24,26 +23,29 @@ export default function TimerMenu({ route, navigation }: Props) {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={styles.avoidingView}>
-            <View style={styles.TimerInput}>
-                <Text>Name: </Text>
+        <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={timerMenuStyles.container}>
+            <View style={timerMenuStyles.timerInputContainer}>
+                <Text style={timerMenuStyles.timerInputLabel}>Name: </Text>
                 <TextInput 
+                    style={timerMenuStyles.timerInputTextBox}
                     defaultValue={timerName} 
                     onChangeText={(value) => {setTimerName(value)}}
                 />
             </View>
-            <View style={styles.TimerInput}>
-                <Text>Minute: </Text>
+            <View style={timerMenuStyles.timerInputContainer}>
+                <Text style={timerMenuStyles.timerInputLabel}>Minute: </Text>
                 <TextInput 
-                    defaultValue={duration.minute.toString()} 
+                    style={timerMenuStyles.timerInputTextBox}
+                    defaultValue={duration.minute.toString().padStart(2, "0")} 
                     onChangeText={(value) => {setTimerDuration({minute: Number(value), second: duration.second})}}
                     keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}   
                 />
             </View>
-            <View style={styles.TimerInput}>
-                <Text>Second: </Text>
+            <View style={timerMenuStyles.timerInputContainer}>
+                <Text style={timerMenuStyles.timerInputLabel}>Second: </Text>
                 <TextInput
-                    defaultValue={duration.second.toString()}
+                    style={timerMenuStyles.timerInputTextBox}
+                    defaultValue={duration.second.toString().padStart(2, "0")}
                     onChangeText={(value) => {setTimerDuration({minute: duration.minute, second: Number(value)})}}
                     keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
                 />
@@ -52,3 +54,39 @@ export default function TimerMenu({ route, navigation }: Props) {
         </KeyboardAvoidingView>
     );
 }
+
+const timerMenuStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        gap: 5,
+        margin: 10,
+        alignContent: "center",
+    },
+    timerInputContainer: {
+        flexDirection: "row",
+        width: "100%",
+        gap: 60,
+        padding: 10,
+        margin: 5,
+        backgroundColor: "white",
+        borderRadius: 15,
+    },
+    timerInputLabel: {
+        width: "20%",
+        fontSize: 20,
+        alignSelf: "center",
+        fontWeight: "bold",
+        fontFamily: "CityLight Dots",
+    },
+    timerInputTextBox: {
+        alignSelf: "flex-end",
+        alignContent: "flex-end",
+        justifyContent: "flex-end",
+        borderWidth: 1,
+        borderColor: "black",
+        height: 40,
+        width: "60%",
+        textAlign: "center",
+        fontSize: 20,
+    }
+});

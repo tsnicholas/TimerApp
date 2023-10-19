@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { RootStackParams, Timer } from "../types";
 import TimerView from "../components/TimerView";
 import styles from "../styles";
@@ -54,7 +54,7 @@ export default function TimerSet({navigation, route}: Props) {
     return (
         <View style={styles.app}>
             <SubtitleText>{route.params?.timerSet.name}</SubtitleText>
-            <ScrollView style={styles.scrollContainer}>
+            <ScrollView style={timerSetStyles.timerViewContainer}>
                 {timers}
             </ScrollView>
             <TouchableOpacity
@@ -66,3 +66,12 @@ export default function TimerSet({navigation, route}: Props) {
         </View>
     )
 }
+
+const timerSetStyles = StyleSheet.create({
+    timerViewContainer: {
+        flex: 1,
+        alignSelf: "flex-start", 
+        width: "100%",
+        gap: 5,
+    }
+});
