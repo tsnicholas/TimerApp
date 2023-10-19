@@ -121,7 +121,6 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
 const timerViewStyles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    borderTopWidth: 2,
     borderBottomWidth: 2,
     borderColor: "black",
     paddingHorizontal: 10,

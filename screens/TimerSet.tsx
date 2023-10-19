@@ -5,7 +5,6 @@ import TimerView from "../components/TimerView";
 import styles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { genid } from "../utils";
-import { SubtitleText } from "../shared";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
 
@@ -53,7 +52,7 @@ export default function TimerSet({navigation, route}: Props) {
     
     return (
         <View style={styles.app}>
-            <SubtitleText>{route.params?.timerSet.name}</SubtitleText>
+            <Text style={timerSetStyles.headerText}>{route.params.timerSet.name}</Text>
             <ScrollView style={timerSetStyles.timerViewContainer}>
                 {timers}
             </ScrollView>
@@ -73,5 +72,13 @@ const timerSetStyles = StyleSheet.create({
         alignSelf: "flex-start", 
         width: "100%",
         gap: 5,
+    },
+    headerText: {
+        width: "100%",
+        textAlign: "center",
+        fontSize: 50,
+        fontWeight: "bold",
+        borderBottomColor: "black",
+        borderBottomWidth: 2,
     }
 });
