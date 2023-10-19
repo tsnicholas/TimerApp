@@ -1,11 +1,11 @@
 import React, { ReactElement, useState, useEffect } from "react";
-import { View, ScrollView, Button } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import { RootStackParams, Timer } from "../types";
 import TimerView from "../components/TimerView";
 import styles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { genid } from "../utils";
-import { TitleText } from "../shared";
+import { SubtitleText } from "../shared";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
 
@@ -24,6 +24,7 @@ export default function TimerSet({navigation, route}: Props) {
         const newValues: Timer[] = timerSet;
         newValues.push(timer);
         setTimerSet(newValues);
+        console.log("Number of Timers: " + numOfTimers);
     }, [numOfTimers]);
 
     function onDataChangeRequest(inputTimer: Timer) {
@@ -52,11 +53,16 @@ export default function TimerSet({navigation, route}: Props) {
     
     return (
         <View style={styles.app}>
-            <TitleText>{route.params?.timerSet.name}</TitleText>
+            <SubtitleText>{route.params?.timerSet.name}</SubtitleText>
             <ScrollView style={styles.scrollContainer}>
                 {timers}
             </ScrollView>
-            <Button title="Add Timer" onPress={() => {setNumberOfTimers(numOfTimers + 1)}}/>
+            <TouchableOpacity
+                onPress={() => {setNumberOfTimers(numOfTimers + 1)}}
+                style={styles.roundButton}
+            >
+                <Text style={styles.plusButton}>+</Text>
+            </TouchableOpacity>
         </View>
     )
 }

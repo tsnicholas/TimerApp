@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { View, ScrollView, Button } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import TimerSetView from "../components/TimerSetView";
 import styles from "../styles";
 import { genid } from "../utils";
@@ -31,7 +31,12 @@ export default function TimerSets() {
             <ScrollView style={styles.scrollContainer}>
                 {timerSets}
             </ScrollView>
-            <Button title="Add TimerSet" onPress={() => {setNumberOfTimerSets(numberOfTimerSets + 1)}}/>
+            <TouchableOpacity
+                onPress={() => {setNumberOfTimerSets(numberOfTimerSets + 1)}}
+                style={styles.roundButton}
+            >
+                <Text style={styles.plusButton}>+</Text>
+            </TouchableOpacity>
         </View>
     )
 }

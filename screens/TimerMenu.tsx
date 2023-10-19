@@ -11,14 +11,16 @@ export default function TimerMenu({ route, navigation }: Props) {
     const [duration, setTimerDuration] = useState<Duration>(route.params.timer.length);
 
     function handleConfirmation() {
+        console.log("Handling Confirmation...");
         route.params.onDataChangeRequest({
             id: route.params.timer.id, 
             name: timerName, 
             timerTurnedOn: false, 
             length: duration, 
             duration: {minute: duration.minute, second: duration.second},
-        })
+        });
         navigation.goBack();
+        console.log("Confirmation Complete!");
     }
 
     return (
@@ -46,7 +48,7 @@ export default function TimerMenu({ route, navigation }: Props) {
                     keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
                 />
             </View>
-            <Button title="Confirm" onPress={() => {handleConfirmation}}/>
+            <Button title="Confirm" onPress={handleConfirmation}/>
         </KeyboardAvoidingView>
     );
 }

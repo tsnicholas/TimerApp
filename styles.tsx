@@ -34,7 +34,21 @@ const styles = StyleSheet.create({
     },
     avoidingView: {
         flex: 1,
-    }
+    },
+    roundButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 100,
+        justifyContent: "center",
+        alignContent: "center",
+        padding: 10,
+        backgroundColor: "#0a84ff",
+    },
+    plusButton: {
+        fontSize: 20,
+        color: "white",
+        textAlign: "center",
+    },
 });
 
 export default styles;
