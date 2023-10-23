@@ -13,14 +13,7 @@ interface TimerProps {
 export default function TimerView({timerValues: timer, onDataChange, onNavigation} : TimerProps) {
   useEffect(() => {
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
-      Alert.alert(`Time on ${timer.name} is up!`);
-      onDataChange({
-        id: timer.id, 
-        name: timer.name, 
-        timerTurnedOn: false, 
-        length: timer.length,
-        duration: timer.duration
-      });
+      alert();
     } else if(timer.timerTurnedOn) {
       const id = setInterval(() => {
         onTimePasses();
@@ -30,6 +23,31 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
       }
     }
   });
+
+  function alert() {
+    Alert.alert("Timer Finished", `Time on ${timer.name} is up!`, [
+      {
+        text: "Ok",
+        onPress: () => {onDataChange({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: false, 
+          length: timer.length,
+          duration: timer.duration
+        })}
+      },
+      {
+        text: "Reset",
+        onPress: () => {onDataChange({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: timer.timerTurnedOn, 
+          length: {minute: timer.duration.minute, second: timer.duration.second},
+          duration: timer.duration,
+        })}
+      }
+    ]);
+  }
 
   function onTimePasses() {
     const length = timer.length;
