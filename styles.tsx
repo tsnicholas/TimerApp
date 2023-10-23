@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const sharedStyles = StyleSheet.create({
     app: {
       flex: 1,
       paddingTop: 10,
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default styles;
+export default sharedStyles;

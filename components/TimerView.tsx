@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, Alert, TouchableOpacity, StyleSheet, Image } from "react-native";
-import styles from "../styles";
+import sharedStyles from "../styles";
 import { Timer } from "../types";
 
 interface TimerProps {
@@ -56,7 +56,7 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
   }
 
   return (
-    <View style={timerViewStyles.container}>
+    <View style={styles.container}>
       <TouchableOpacity 
         onPress={() => {onNavigation({
           id: timer.id, 
@@ -67,17 +67,17 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
         });}}
       >
         <Text>{timer.name}</Text>
-        <Text style={timerViewStyles.timeFace}>
+        <Text style={styles.timeFace}>
           {timer.length.minute.toString().padStart(2, "0")}:{timer.length.second.toString().padStart(2, "0")}
         </Text>
       </TouchableOpacity>
-      <View style={timerViewStyles.buttonRow}>
+      <View style={styles.buttonRow}>
         <TouchableOpacity 
           onPress={startTimer}
-          style={styles.roundButton}
+          style={sharedStyles.roundButton}
         >
           <Image
-            style={timerViewStyles.playIcon}
+            style={styles.playIcon}
             source={require("../assets/play_icon.png")}
           />
         </TouchableOpacity>
@@ -89,11 +89,11 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
             length: timer.length,
             duration: timer.duration,
           })}}
-          style={styles.roundButton}
+          style={sharedStyles.roundButton}
         >
-          <View style={timerViewStyles.pauseIcon}>
-            <View style={timerViewStyles.pauseStrip}></View>
-            <View style={timerViewStyles.pauseStrip}></View>
+          <View style={styles.pauseIcon}>
+            <View style={styles.pauseStrip}></View>
+            <View style={styles.pauseStrip}></View>
           </View>
         </TouchableOpacity>
         <TouchableOpacity 
@@ -104,10 +104,10 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
             length: {minute: timer.duration.minute, second: timer.duration.second},
             duration: timer.duration,
           })}}
-          style={styles.roundButton}
+          style={sharedStyles.roundButton}
         >
           <Image 
-            style={timerViewStyles.resetIcon}
+            style={styles.resetIcon}
             source={require("../assets/reset_icon.png")}
           />
         </TouchableOpacity>
@@ -118,7 +118,7 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
 }
 
 
-const timerViewStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     borderBottomWidth: 2,

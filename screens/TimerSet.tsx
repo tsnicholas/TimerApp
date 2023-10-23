@@ -2,7 +2,7 @@ import React, { ReactElement, useState, useEffect } from "react";
 import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { RootStackParams, Timer } from "../types";
 import TimerView from "../components/TimerView";
-import styles from "../styles";
+import sharedStyles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { genid } from "../utils";
 
@@ -51,16 +51,16 @@ export default function TimerSet({navigation, route}: Props) {
     }
     
     return (
-        <View style={styles.app}>
+        <View style={sharedStyles.app}>
             <Text style={timerSetStyles.headerText}>{route.params.timerSet.name}</Text>
             <ScrollView style={timerSetStyles.timerViewContainer}>
                 {timers}
             </ScrollView>
             <TouchableOpacity
                 onPress={() => {setNumberOfTimers(numOfTimers + 1)}}
-                style={styles.roundButton}
+                style={sharedStyles.roundButton}
             >
-                <Text style={styles.plusButton}>+</Text>
+                <Text style={sharedStyles.plusButton}>+</Text>
             </TouchableOpacity>
         </View>
     )

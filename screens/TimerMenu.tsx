@@ -76,7 +76,6 @@ const timerMenuStyles = StyleSheet.create({
         fontSize: 20,
         alignSelf: "center",
         fontWeight: "bold",
-        fontFamily: "CityLight Dots",
     },
     timerInputTextBox: {
         alignSelf: "flex-end",
