@@ -10,12 +10,10 @@ interface TimerSetProps {
 
 export default function TimerSetView({timerSet, onNavigation}: TimerSetProps) {
     return (
-        <View style={sharedStyles.container}>
+        <View style={[sharedStyles.container, styles.container]}>
+            <Text style={styles.title}>{timerSet.name}</Text>
             <TouchableOpacity onPress={() => {onNavigation(timerSet)}}>
-                <View style={styles.container}>
-                    <Text style={styles.title}>{timerSet.name}</Text>
-                    <Text style={styles.navArrow}>{">"}</Text>
-                </View>
+                <Text style={styles.navArrow}>{">"}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -24,8 +22,8 @@ export default function TimerSetView({timerSet, onNavigation}: TimerSetProps) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        paddingVertical: 20,
-        width: "90%",
+        paddingVertical: 15,
+        width: "100%",
         justifyContent: "space-between",
         backgroundColor: "#fff",
         borderBottomWidth: 1,
@@ -39,6 +37,8 @@ const styles = StyleSheet.create({
     navArrow: {
         flex: 1,
         color: "#5A5A5A",
-        fontSize: 22,
+        fontSize: 30,
+        paddingLeft: 200,
+        marginRight: 20,
     }
 });

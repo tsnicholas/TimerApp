@@ -143,15 +143,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 2,
     borderColor: "black",
+    justifyContent: "space-between",
   },
   timeFace: {
     fontSize: 45,
     left: 15,
   },
   buttonRow: {
-    width: "70%",
     flexDirection: "row",
-    justifyContent: "flex-end", 
     alignItems: "center",
     gap: 5,
   },

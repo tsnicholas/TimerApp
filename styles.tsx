@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const sharedStyles = StyleSheet.create({
     app: {
       flex: 1,
-      paddingTop: 10,
+      paddingTop: 20,
       paddingBottom: 20,
       backgroundColor: "#fff",
       alignItems: "center",
@@ -57,6 +57,8 @@ const sharedStyles = StyleSheet.create({
         paddingBottom: 20,
         alignContent: "center",
         justifyContent: "center",
+        margin: 5,
+        gap: 5,
     },
 });
 

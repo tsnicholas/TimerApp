@@ -67,24 +67,21 @@ const styles = StyleSheet.create({
     timerInputContainer: {
         flexDirection: "row",
         width: "100%",
-        gap: 60,
+        justifyContent: "space-between",
         padding: 10,
-        margin: 5,
+        margin: 10,
         backgroundColor: "white",
         borderRadius: 15,
     },
     timerInputLabel: {
-        width: "20%",
         fontSize: 20,
         alignSelf: "center",
         fontWeight: "bold",
     },
     timerInputTextBox: {
-        alignSelf: "flex-end",
-        alignContent: "flex-end",
-        justifyContent: "flex-end",
         height: 40,
-        width: "60%",
+        width: "55%",
         textAlign: "center",
+        marginRight: 10,
     },
 });
