@@ -1,6 +1,8 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet, Text, TextInput } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, TextInput } from "react-native";
 import { TimerSet } from "../types";
+import { AvoidingView } from "../shared";
+import sharedStyles from "../styles";
 
 interface TimerSetProps {
     timerSet: TimerSet,
@@ -10,31 +12,29 @@ interface TimerSetProps {
 
 export default function TimerSetView({timerSet, onNameChange, onNavigation}: TimerSetProps) {
     return (
-        <View style={styles.container}>
+        <AvoidingView style={[sharedStyles.container, styles.container]}>
             <TouchableOpacity onPress={() => {onNavigation(timerSet)}}>
                 <TextInput style={styles.title} onChangeText={(value) => {onNameChange({
                     id: timerSet.id, 
                     name: value, 
                     timers: timerSet.timers})}}
-                >{timerSet.name}</TextInput>
+                >
+                    {timerSet.name}
+                </TextInput>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {onNavigation(timerSet)}}>
                 <Text style={styles.navArrow}>{">"}</Text>
             </TouchableOpacity>
-        </View>
+        </AvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: "row",
         width: "90%",
         justifyContent: "space-between",
         backgroundColor: "#fff",
-        padding: 10,
-        gap: 5,
-        margin: 10,
         borderBottomWidth: 1,
         borderBottomColor: "gray",
     },

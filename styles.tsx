@@ -12,28 +12,24 @@ const sharedStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
         paddingHorizontal: 10,
+        margin: 5,
         gap: 5,
     },
     scrollContainer: {
         flex: 1,
         alignSelf: "flex-start", 
         width: "100%",
+        borderColor: "gray",
+        borderWidth: 1,
     },
-    input: {
+    textBox: {
         fontSize: 20,
         flex: 1,
         borderWidth: 1,
+        borderColor: "black",
         padding: 3,
-        width: 100,
-    },
-    TimerInput: {
-        flexDirection: "row",
-    },
-    avoidingView: {
-        flex: 1,
+        margin: 5,
     },
     roundButton: {
         width: 50,

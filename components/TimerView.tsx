@@ -56,7 +56,7 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[sharedStyles.container, styles.container]}>
       <TouchableOpacity 
         onPress={() => {onNavigation({
           id: timer.id, 
@@ -123,8 +123,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 2,
     borderColor: "black",
-    paddingHorizontal: 10,
-    gap: 5,
   },
   timeFace: {
     fontSize: 45,
