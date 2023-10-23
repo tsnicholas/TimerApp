@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useState } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import TimerSetView from "../components/TimerSetView";
 import sharedStyles from "../styles";
@@ -7,42 +7,39 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams, TimerSet } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { TitleText } from "../shared"
+import CreateTimeSetModal from "../modals/CreateTimeSetModal";
 
 export default function TimerSets() {
-    const [numberOfTimerSets, setNumberOfTimerSets] = useState(0);
     const [timerSets, setTimerSets] = useState<TimerSet[]>([]);
+    const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
-    
-    function onNameChange(inputTimerSet: TimerSet) {
-        setTimerSets(
-            timerSets.map((timerSet) => 
-                inputTimerSet.id == timerSet.id ? inputTimerSet : timerSet
-            )
-        )
+
+    function handleSave(name: string) {
+        setModalVisible(false);
+        const newTimerSet = {
+            id: genid(),
+            name: name,
+            timers: [],
+        }
+        const newValues: TimerSet[] = [];
+        newValues.push(newTimerSet);
+        setTimerSets(newValues);
     }
 
-    useEffect(() => {
-        const timerSet = {
-            id: genid(),
-            name: `TimerSet ${numberOfTimerSets}`,
-            timers: [],
-        };
-        const newValues: TimerSet[] = timerSets;
-        newValues.push(timerSet);
-        setTimerSets(newValues);
-    }, [numberOfTimerSets]);
+    function handleCancel() {
+        setModalVisible(false);
+    }
     
     function onNavigationRequest(timerSet: TimerSet) {
         navigation.navigate("TimerSet", {timerSet});
     }
     
     const timerSetViews: ReactElement[] = [];
-    for(let i = 0; i < numberOfTimerSets; i++) {
+    for(let i = 0; i < timerSets.length; i++) {
         timerSetViews.push(
             <TimerSetView
-                key={`TimerSet ${i}`}
+                key={timerSets[i].id}
                 timerSet={{id: timerSets[i].id, name: timerSets[i].name, timers: timerSets[i].timers}}
-                onNameChange={onNameChange}
                 onNavigation={onNavigationRequest}
             />
         )
@@ -50,12 +47,13 @@ export default function TimerSets() {
 
     return (
         <View style={sharedStyles.app}>
+            <CreateTimeSetModal visible={modalVisible} onSave={handleSave} onCancel={handleCancel}/>
             <TitleText>Timer Sets</TitleText>
             <ScrollView style={sharedStyles.scrollContainer}>
                 {timerSetViews}
             </ScrollView>
             <TouchableOpacity
-                onPress={() => {setNumberOfTimerSets(numberOfTimerSets + 1)}}
+                onPress={() => {setModalVisible(true)}}
                 style={sharedStyles.roundButton}
             >
                 <Text style={sharedStyles.plusButton}>+</Text>

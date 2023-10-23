@@ -25,7 +25,6 @@ const sharedStyles = StyleSheet.create({
     },
     textBox: {
         fontSize: 20,
-        flex: 1,
         borderWidth: 1,
         borderColor: "black",
         padding: 3,
@@ -44,6 +43,20 @@ const sharedStyles = StyleSheet.create({
         fontSize: 20,
         color: "white",
         textAlign: "center",
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "center",
+        width: "100%",
+        gap: 5,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "#dddddd",
+        paddingTop: 10,
+        paddingBottom: 20,
+        alignContent: "center",
+        justifyContent: "center",
     },
 });
 

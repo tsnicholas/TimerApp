@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, Alert, TouchableOpacity, StyleSheet, Image } from "react-native";
 import sharedStyles from "../styles";
 import { Timer } from "../types";
+import EditTimerModal from "../modals/EditTimerModal";
 
 interface TimerProps {
   timerValues: Timer,
   onDataChange: (inputTimer: Timer) => void,
-  onNavigation: (inputTimer: Timer) => void,
 }
 
-export default function TimerView({timerValues: timer, onDataChange, onNavigation} : TimerProps) {
+export default function TimerView({timerValues: timer, onDataChange} : TimerProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+  
   useEffect(() => {
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
       alert();
@@ -73,16 +75,16 @@ export default function TimerView({timerValues: timer, onDataChange, onNavigatio
     return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
   }
 
+  function handleSave(timer: Timer) {
+    onDataChange(timer);
+    setModalVisible(false);
+  }
+
   return (
     <View style={[sharedStyles.container, styles.container]}>
+      <EditTimerModal timer={timer} visible={modalVisible} onSave={handleSave} onCancel={() => {setModalVisible(false)}}/>
       <TouchableOpacity 
-        onPress={() => {onNavigation({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: timer.timerTurnedOn, 
-          length: timer.length,
-          duration: timer.duration,
-        });}}
+        onPress={() => {setModalVisible(true)}}
       >
         <Text>{timer.name}</Text>
         <Text style={styles.timeFace}>

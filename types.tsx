@@ -23,9 +23,4 @@ export type RootStackParams = {
     TimerSet: {
         timerSet: TimerSet
     };
-
-    TimerMenu: {
-        timer: Timer,
-        onDataChangeRequest: (timer: Timer) => void,
-    };
 }

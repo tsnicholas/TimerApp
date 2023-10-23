@@ -8,7 +8,7 @@ import { genid } from "../utils";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
 
-export default function TimerSet({navigation, route}: Props) {
+export default function TimerSet({route}: Props) {
     const [timerSet, setTimerSet] = useState<Timer[]>([]);
     const [numOfTimers, setNumberOfTimers] = useState(0);
     
@@ -34,10 +34,6 @@ export default function TimerSet({navigation, route}: Props) {
         );
     }
 
-    function onNavigationRequest(timer: Timer) {
-        navigation.navigate("TimerMenu", {timer, onDataChangeRequest});
-    }
-
     const timers: ReactElement[] = [];
     for(let i = 0; i < numOfTimers; i++) {
         timers.push(
@@ -45,7 +41,6 @@ export default function TimerSet({navigation, route}: Props) {
                 key={`${timerSet[i].id}`}
                 timerValues={timerSet[i]}
                 onDataChange={onDataChangeRequest}
-                onNavigation={onNavigationRequest}
             />
         );
     }
