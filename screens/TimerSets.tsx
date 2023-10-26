@@ -15,6 +15,7 @@ export default function TimerSets() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
     function handleSave(name: string) {
+        console.log("Creating new timer set...");
         setModalVisible(false);
         const newTimerSet = {
             id: genid(),
@@ -24,13 +25,16 @@ export default function TimerSets() {
         const newValues: TimerSet[] = timerSets;
         newValues.push(newTimerSet);
         setTimerSets(newValues);
+        console.log("Timer Set Created!");
     }
 
     function handleCancel() {
+        console.log("Canceling timer set creation.");
         setModalVisible(false);
     }
     
     function onNavigationRequest(timerSet: TimerSet) {
+        console.log("Navigating to Timer Set screen.");
         navigation.navigate("TimerSet", {timerSet});
     }
     
