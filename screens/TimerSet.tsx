@@ -13,6 +13,7 @@ export default function TimerSet({route}: Props) {
     const [numOfTimers, setNumberOfTimers] = useState(0);
     
     useEffect(() => {
+        console.log("Creating a new timer...");
         const timer = {
             id: genid(), 
             name: `Timer ${numOfTimers}`, 
@@ -23,7 +24,7 @@ export default function TimerSet({route}: Props) {
         const newValues: Timer[] = timerSet;
         newValues.push(timer);
         setTimerSet(newValues);
-        console.log("Number of Timers: " + numOfTimers);
+        console.log("Timer Created. Number of Timers: " + numOfTimers);
     }, [numOfTimers]);
 
     function onDataChangeRequest(inputTimer: Timer) {
@@ -39,7 +40,7 @@ export default function TimerSet({route}: Props) {
         timers.push(
             <TimerView
                 key={`${timerSet[i].id}`}
-                timerValues={timerSet[i]}
+                timer={timerSet[i]}
                 onDataChange={onDataChangeRequest}
             />
         );

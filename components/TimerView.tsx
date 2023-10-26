@@ -8,11 +8,11 @@ import { Audio } from "expo-av";
 import alarm from "../assets/Alarm_Clock_Sound_Effect.mp3";
 
 interface TimerProps {
-  timerValues: Timer,
+  timer: Timer,
   onDataChange: (inputTimer: Timer) => void,
 }
 
-export default function TimerView({timerValues: timer, onDataChange} : TimerProps) {
+export default function TimerView({timer, onDataChange} : TimerProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const sound = new Audio.Sound();
 
@@ -32,35 +32,26 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
   function alert() {
     playAlarm();
     Vibration.vibrate(10, true);
-    
     Alert.alert("Timer Finished!", `Time on ${timer.name} is up!`, [
       {
         text: "Ok",
-        onPress: () => {
-          stopAlarm();
-          Vibration.cancel();
-          onDataChange({
-            id: timer.id, 
-            name: timer.name, 
-            timerTurnedOn: false, 
-            length: timer.length,
-            duration: timer.duration
-          });
-        }
+        onPress: () => {() => {handleAlertButtonPressed({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: false, 
+          length: timer.length,
+          duration: timer.duration
+        })}}
       },
       {
         text: "Reset",
-        onPress: () => {
-          stopAlarm();
-          Vibration.cancel();
-          onDataChange({
-            id: timer.id, 
-            name: timer.name, 
-            timerTurnedOn: timer.timerTurnedOn, 
-            length: {minute: timer.duration.minute, second: timer.duration.second},
-            duration: timer.duration,
-          });
-        }
+        onPress: () => {() => {handleAlertButtonPressed({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: timer.timerTurnedOn, 
+          length: {minute: timer.duration.minute, second: timer.duration.second},
+          duration: timer.duration,
+        })}}
       }
     ]);
   }
@@ -74,7 +65,12 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
     } catch(error) {
       console.error("Unable to play alarm.", error);
     }
-    
+  }
+
+  function handleAlertButtonPressed(timer: Timer) {
+    stopAlarm();
+    Vibration.cancel();
+    onDataChange(timer);
   }
 
   async function stopAlarm() {
@@ -98,20 +94,8 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
     onDataChange({id: timer.id, name: timer.name, timerTurnedOn: timer.timerTurnedOn, length: length, duration: timer.duration});
   }
 
-  function startTimer() {
-    if(IsValidNumbers()) {
-      Alert.alert("Invalid Input!");
-      return;
-    }
-    onDataChange({id: timer.id, name: timer.name, timerTurnedOn: true, length: timer.length, duration: timer.duration});
-  }
-  
-  function IsValidNumbers() {
-    const length = timer.length;
-    return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
-  }
-
   function handleSave(timer: Timer) {
+    console.log("Saving Changes.");
     onDataChange(timer);
     setModalVisible(false);
   }
@@ -127,16 +111,29 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
           {timer.length.minute.toString().padStart(2, "0")}:{timer.length.second.toString().padStart(2, "0")}
         </Text>
       </TouchableOpacity>
+      <Controls timer={timer} onDataChange={onDataChange}/>
+      <StatusBar style="auto"/>
+    </View>
+  );
+}
+
+function Controls({timer, onDataChange}: TimerProps) {
+  function startTimer() {
+    if(IsValidNumbers()) {
+      Alert.alert("Invalid Input!");
+      return;
+    }
+    onDataChange({id: timer.id, name: timer.name, timerTurnedOn: true, length: timer.length, duration: timer.duration});
+  }
+  
+  function IsValidNumbers() {
+    const length = timer.length;
+    return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
+  }
+  
+  if(timer.timerTurnedOn) {
+    return (
       <View style={styles.buttonRow}>
-        <TouchableOpacity 
-          onPress={startTimer}
-          style={sharedStyles.roundButton}
-        >
-          <Image
-            style={styles.playIcon}
-            source={require("../assets/play_icon.png")}
-          />
-        </TouchableOpacity>
         <TouchableOpacity 
           onPress={() => {onDataChange({
             id: timer.id, 
@@ -167,12 +164,24 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
             source={require("../assets/reset_icon.png")}
           />
         </TouchableOpacity>
+      </View>  
+    );
+  } else {
+    return (
+      <View style={styles.buttonRow}>
+        <TouchableOpacity 
+          onPress={startTimer}
+          style={sharedStyles.roundButton}
+        >
+          <Image
+            style={styles.playIcon}
+            source={require("../assets/play_icon.png")}
+          />
+        </TouchableOpacity>
       </View>
-      <StatusBar style="auto"/>
-    </View>
-  );
+    );
+  }
 }
-
 
 const styles = StyleSheet.create({
   container: {
