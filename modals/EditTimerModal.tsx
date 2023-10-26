@@ -63,7 +63,7 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
                     />
                 </View>
                 <View style={sharedStyles.buttonRow}>
-                    <Button title="Confirm" onPress={validateName}/>
+                    <Button title="Save" onPress={validateName}/>
                     <Button title="Cancel" onPress={onCancel}/>
                 </View>
             </AvoidingView>

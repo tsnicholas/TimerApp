@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Alert, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { Text, View, Alert, TouchableOpacity, StyleSheet, Image, Vibration } from "react-native";
 import sharedStyles from "../styles";
 import { Timer } from "../types";
 import EditTimerModal from "../modals/EditTimerModal";
+import { Audio } from "expo-av";
+import alarm from "../assets/Alarm_Clock_Sound_Effect.mp3";
 
 interface TimerProps {
   timerValues: Timer,
@@ -12,7 +14,8 @@ interface TimerProps {
 
 export default function TimerView({timerValues: timer, onDataChange} : TimerProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const sound = new Audio.Sound();
+
   useEffect(() => {
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
       alert();
@@ -27,28 +30,61 @@ export default function TimerView({timerValues: timer, onDataChange} : TimerProp
   });
 
   function alert() {
-    Alert.alert("Timer Finished", `Time on ${timer.name} is up!`, [
+    playAlarm();
+    Vibration.vibrate(10, true);
+    
+    Alert.alert("Timer Finished!", `Time on ${timer.name} is up!`, [
       {
         text: "Ok",
-        onPress: () => {onDataChange({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: false, 
-          length: timer.length,
-          duration: timer.duration
-        })}
+        onPress: () => {
+          stopAlarm();
+          Vibration.cancel();
+          onDataChange({
+            id: timer.id, 
+            name: timer.name, 
+            timerTurnedOn: false, 
+            length: timer.length,
+            duration: timer.duration
+          });
+        }
       },
       {
         text: "Reset",
-        onPress: () => {onDataChange({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: timer.timerTurnedOn, 
-          length: {minute: timer.duration.minute, second: timer.duration.second},
-          duration: timer.duration,
-        })}
+        onPress: () => {
+          stopAlarm();
+          Vibration.cancel();
+          onDataChange({
+            id: timer.id, 
+            name: timer.name, 
+            timerTurnedOn: timer.timerTurnedOn, 
+            length: {minute: timer.duration.minute, second: timer.duration.second},
+            duration: timer.duration,
+          });
+        }
       }
     ]);
+  }
+
+  async function playAlarm() {
+    console.log("Starting alarm.");
+    try {
+      await sound.loadAsync(alarm);
+      await sound.setIsLoopingAsync(true);
+      await sound.playAsync();
+    } catch(error) {
+      console.error("Unable to play alarm.", error);
+    }
+    
+  }
+
+  async function stopAlarm() {
+    console.log("Stopping alarm.");
+    try {
+      await sound.stopAsync();
+      await sound.unloadAsync();
+    } catch(error) {
+      console.error("Unable to stop alarm.", error);
+    }
   }
 
   function onTimePasses() {

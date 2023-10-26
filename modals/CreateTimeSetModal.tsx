@@ -34,7 +34,7 @@ export default function CreateTimeSetModal({visible, onSave, onCancel}: CreateTi
                     onChangeText={setNewName} 
                 />
                 <View style={sharedStyles.buttonRow}>
-                    <Button title="Create" onPress={validateName}/>
+                    <Button title="Save" onPress={validateName}/>
                     <Button title="Cancel" onPress={onCancel}/>
                 </View>
             </AvoidingView>
