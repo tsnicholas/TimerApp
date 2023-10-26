@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Platform, Button, StyleSheet, Modal } from "react-native";
+import { View, Text, TextInput, Platform, Button, StyleSheet, Modal, Alert } from "react-native";
 import { Duration, Timer } from "../types";
 import { AvoidingView } from "../shared";
 import sharedStyles from "../styles";
@@ -14,6 +14,20 @@ interface EditTimerProps {
 export default function EditTimerModal({ timer, visible, onSave, onCancel}: EditTimerProps) {
     const [timerName, setTimerName] = useState(timer.name);
     const [duration, setTimerDuration] = useState<Duration>(timer.duration);
+
+    function validateName() {
+        if(timerName !== "") {
+            onSave({
+                id: timer.id, 
+                name: timerName, 
+                timerTurnedOn: false, 
+                duration: duration, 
+                length: {minute: duration.minute, second: duration.second}
+            });
+            return;
+        }
+        Alert.alert("Error", "Please enter a name.");
+    }
 
     return (
         <Modal
@@ -49,13 +63,7 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
                     />
                 </View>
                 <View style={sharedStyles.buttonRow}>
-                    <Button title="Confirm" onPress={() => {onSave({
-                        id: timer.id, 
-                        name: timerName, 
-                        timerTurnedOn: false, 
-                        duration: duration, 
-                        length: {minute: duration.minute, second: duration.second}
-                    })}}/>
+                    <Button title="Confirm" onPress={validateName}/>
                     <Button title="Cancel" onPress={onCancel}/>
                 </View>
             </AvoidingView>
