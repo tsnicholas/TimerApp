@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, TextInput, StyleSheet, View, Button } from "react-native";
+import { Modal, TextInput, StyleSheet, View, Button, Alert } from "react-native";
 import { AvoidingView, SubtitleText } from "../shared";
 import sharedStyles from "../styles";
 
@@ -12,11 +12,19 @@ interface CreateTimeSetModalProps {
 export default function CreateTimeSetModal({visible, onSave, onCancel}: CreateTimeSetModalProps) {
     const [newName, setNewName] = useState("Timer Set");
 
+    function validateName() {
+        if(newName !== "") {
+            onSave(newName);
+            return;
+        }
+        Alert.alert("Error", "Please don't leave name blank.");
+    }
+
     return(
         <Modal
             visible={visible}
             animationType="slide"
-            transparent={false}
+            transparent={true}
         >
             <AvoidingView style={sharedStyles.modalContainer}>
                 <SubtitleText>Name of your new Timer Set: </SubtitleText>
@@ -26,7 +34,7 @@ export default function CreateTimeSetModal({visible, onSave, onCancel}: CreateTi
                     onChangeText={setNewName} 
                 />
                 <View style={sharedStyles.buttonRow}>
-                    <Button title="Create" onPress={() => {onSave(newName)}}/>
+                    <Button title="Create" onPress={validateName}/>
                     <Button title="Cancel" onPress={onCancel}/>
                 </View>
             </AvoidingView>

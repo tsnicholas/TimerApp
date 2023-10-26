@@ -21,7 +21,7 @@ export default function TimerSets() {
             name: name,
             timers: [],
         }
-        const newValues: TimerSet[] = [];
+        const newValues: TimerSet[] = timerSets;
         newValues.push(newTimerSet);
         setTimerSets(newValues);
     }

@@ -20,8 +20,9 @@ const sharedStyles = StyleSheet.create({
         flex: 1,
         alignSelf: "flex-start", 
         width: "100%",
-        borderColor: "gray",
-        borderWidth: 1,
+        padding: 5,
+        gap: 5,
+        borderWidth: 2,
     },
     textBox: {
         fontSize: 20,
@@ -53,11 +54,10 @@ const sharedStyles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         backgroundColor: "#dddddd",
-        paddingTop: 10,
-        paddingBottom: 20,
+        padding: 20,
         alignContent: "center",
         justifyContent: "center",
-        margin: 5,
+        margin: 10,
         gap: 5,
     },
 });
