@@ -16,7 +16,7 @@ export default function TimerSetScreen({route}: Props) {
     let numOfTimers = timerSet.length;
 
     useEffect(() => {
-        console.log("Re-rendering...");
+        console.log("Timer Set Screen Re-rendering...");
         updateTimerSet({id: route.params.timerSet.id, name: route.params.timerSet.name, timers: timerSet});
     }, [timerSet]);
 

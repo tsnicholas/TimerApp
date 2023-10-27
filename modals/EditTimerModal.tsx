@@ -4,6 +4,8 @@ import { Duration, Timer } from "../types";
 import { AvoidingView } from "../shared";
 import sharedStyles from "../styles";
 
+const KEYBOARD_TYPE = Platform.OS == "android" ? "numeric" : "number-pad";
+
 interface EditTimerProps {
     timer: Timer,
     visible: boolean,
@@ -15,18 +17,22 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
     const [timerName, setTimerName] = useState(timer.name);
     const [duration, setTimerDuration] = useState<Duration>(timer.duration);
 
-    function validateName() {
-        if(timerName !== "") {
-            onSave({
-                id: timer.id, 
-                name: timerName, 
-                timerTurnedOn: false, 
-                duration: duration, 
-                length: {minute: duration.minute, second: duration.second}
-            });
+    function validation() {
+        if(timerName === "") {
+            Alert.alert("Invalid Input", "Please enter a name.");
             return;
         }
-        Alert.alert("Error", "Please enter a name.");
+        if(duration.minute == 0 && duration.second == 0) {
+            Alert.alert("Invalid Input", "Please enter a number higher than 0.");
+            return;
+        }
+        onSave({
+            id: timer.id, 
+            name: timerName, 
+            timerTurnedOn: false, 
+            duration: duration, 
+            length: {minute: duration.minute, second: duration.second}
+        });
     }
 
     return (
@@ -50,7 +56,7 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
                         style={[sharedStyles.textBox, styles.timerInputTextBox]}
                         value={duration.minute.toString().padStart(2, "0")} 
                         onChangeText={(value) => {setTimerDuration({minute: Number(value), second: duration.second})}}
-                        keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}   
+                        keyboardType={KEYBOARD_TYPE}   
                     />
                 </View>
                 <View style={styles.timerInputContainer}>
@@ -59,11 +65,11 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
                         style={[sharedStyles.textBox, styles.timerInputTextBox]}
                         value={duration.second.toString().padStart(2, "0")}
                         onChangeText={(value) => {setTimerDuration({minute: duration.minute, second: Number(value)})}}
-                        keyboardType={Platform.OS == "android" ? "numeric" : "number-pad"}
+                        keyboardType={KEYBOARD_TYPE}
                     />
                 </View>
                 <View style={sharedStyles.buttonRow}>
-                    <Button title="Save" onPress={validateName}/>
+                    <Button title="Save" onPress={validation}/>
                     <Button title="Cancel" onPress={onCancel}/>
                 </View>
             </AvoidingView>

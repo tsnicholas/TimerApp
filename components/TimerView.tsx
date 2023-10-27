@@ -16,6 +16,7 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
   const alarm = new Alarm();
 
   useEffect(() => {
+    console.log("Timer View Re-rendering...");
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
       alert();
     } else if(timer.timerTurnedOn) {
@@ -38,18 +39,8 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
           id: timer.id, 
           name: timer.name, 
           timerTurnedOn: false, 
-          length: timer.length,
-          duration: timer.duration
-        })}}
-      },
-      {
-        text: "Reset",
-        onPress: () => {() => {handleAlertButtonPressed({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: timer.timerTurnedOn, 
           length: {minute: timer.duration.minute, second: timer.duration.second},
-          duration: timer.duration,
+          duration: timer.duration
         })}}
       }
     ]);
