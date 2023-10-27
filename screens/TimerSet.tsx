@@ -5,14 +5,22 @@ import TimerView from "../components/TimerView";
 import sharedStyles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { genid } from "../utils";
+import { useUpdateTimerSet } from "../contexts/TimerSetsContext";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
 
-export default function TimerSet({route}: Props) {
-    const [timerSet, setTimerSet] = useState<Timer[]>([]);
-    const [numOfTimers, setNumberOfTimers] = useState(0);
-    
+export default function TimerSetScreen({route}: Props) {
+    const [timerSet, setTimerSet] = useState<Timer[]>(route.params.timerSet.timers);
+    const timers: ReactElement[] = [];
+    const updateTimerSet = useUpdateTimerSet();
+    let numOfTimers = timerSet.length;
+
     useEffect(() => {
+        console.log("Re-rendering...");
+        updateTimerSet({id: route.params.timerSet.id, name: route.params.timerSet.name, timers: timerSet});
+    }, [timerSet]);
+
+    function addTimer() {
         console.log("Creating a new timer...");
         const timer = {
             id: genid(), 
@@ -21,11 +29,10 @@ export default function TimerSet({route}: Props) {
             length: {minute: 0, second: 0}, 
             duration: {minute: 0, second: 0}
         };
-        const newValues: Timer[] = timerSet;
-        newValues.push(timer);
-        setTimerSet(newValues);
-        console.log("Timer Created. Number of Timers: " + numOfTimers);
-    }, [numOfTimers]);
+        // This will trigger a re-render unlike pushing or assigning a new array.
+        setTimerSet(timerSet.concat([timer]));
+        console.log("Timer Created. Number of Timers: " + numOfTimers++);
+    }
 
     function onDataChangeRequest(inputTimer: Timer) {
         setTimerSet(
@@ -34,8 +41,7 @@ export default function TimerSet({route}: Props) {
             )
         );
     }
-
-    const timers: ReactElement[] = [];
+    
     for(let i = 0; i < numOfTimers; i++) {
         timers.push(
             <TimerView
@@ -53,7 +59,7 @@ export default function TimerSet({route}: Props) {
                 {timers}
             </ScrollView>
             <TouchableOpacity
-                onPress={() => {setNumberOfTimers(numOfTimers + 1)}}
+                onPress={() => {addTimer()}}
                 style={sharedStyles.roundButton}
             >
                 <Text style={sharedStyles.plusButton}>+</Text>

@@ -8,11 +8,13 @@ import { RootStackParams, TimerSet } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { TitleText } from "../shared"
 import CreateTimeSetModal from "../modals/CreateTimeSetModal";
+import { useTimerSets, useCreateTimerSet } from "../contexts/TimerSetsContext";
 
-export default function TimerSets() {
-    const [timerSets, setTimerSets] = useState<TimerSet[]>([]);
+export default function TimerSetsScreen() {
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+    const timerSets = useTimerSets();
+    const createTimerSet = useCreateTimerSet();
 
     function handleSave(name: string) {
         console.log("Creating new timer set...");
@@ -22,10 +24,7 @@ export default function TimerSets() {
             name: name,
             timers: [],
         }
-        const newValues: TimerSet[] = timerSets;
-        newValues.push(newTimerSet);
-        setTimerSets(newValues);
-        console.log("Timer Set Created!");
+        createTimerSet(newTimerSet);
     }
 
     function handleCancel() {
@@ -34,7 +33,7 @@ export default function TimerSets() {
     }
     
     function onNavigationRequest(timerSet: TimerSet) {
-        console.log("Navigating to Timer Set screen.");
+        console.log("Navigating to Timer Set screen.");        
         navigation.navigate("TimerSet", {timerSet});
     }
     
@@ -43,7 +42,7 @@ export default function TimerSets() {
         timerSetViews.push(
             <TimerSetView
                 key={timerSets[i].id}
-                timerSet={{id: timerSets[i].id, name: timerSets[i].name, timers: timerSets[i].timers}}
+                timerSet={timerSets[i]}
                 onNavigation={onNavigationRequest}
             />
         )

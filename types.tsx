@@ -21,6 +21,6 @@ export type RootStackParams = {
     TimerSets: undefined;
     
     TimerSet: {
-        timerSet: TimerSet
+        timerSet: TimerSet,
     };
 }
