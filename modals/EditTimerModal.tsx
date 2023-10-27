@@ -18,12 +18,12 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
     const [duration, setTimerDuration] = useState<Duration>(timer.duration);
 
     function validation() {
-        if(timerName === "") {
-            Alert.alert("Invalid Input", "Please enter a name.");
+        if(IsInvalidNumbers()) {
+            Alert.alert("Invalid Input", "Please enter a valid number.");
             return;
         }
-        if(duration.minute == 0 && duration.second == 0) {
-            Alert.alert("Invalid Input", "Please enter a number higher than 0.");
+        if(timerName === "") {
+            Alert.alert("Invalid Input", "Please enter a name.");
             return;
         }
         onSave({
@@ -34,6 +34,24 @@ export default function EditTimerModal({ timer, visible, onSave, onCancel}: Edit
             length: {minute: duration.minute, second: duration.second}
         });
     }
+
+    function IsInvalidNumbers() {
+        const errorFlags = [
+            duration.minute < 0,
+            duration.second < 0,
+            duration.second > 60,
+            duration.second == 0 && duration.minute == 0,
+            Number.isNaN(duration.minute),
+            Number.isNaN(duration.second)
+        ];
+        
+        for(const flag of errorFlags) {
+            if(flag) {
+                return true;
+            }
+        }
+        return false;
+      }
 
     return (
         <Modal

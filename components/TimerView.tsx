@@ -69,22 +69,6 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
     setModalVisible(false);
   }
 
-  function startTimer() {
-    if(IsValidNumbers()) {
-      Alert.alert("Invalid Input!", "Please enter an integer.");
-      return;
-    } else if(timer.length.minute == 0 && timer.length.second == 0) {
-      Alert.alert("Error!", "Timer must not be zero.");
-      return;
-    }
-    onDataChange({id: timer.id, name: timer.name, timerTurnedOn: true, length: timer.length, duration: timer.duration});
-  }
-  
-  function IsValidNumbers() {
-    const length = timer.length;
-    return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
-  }
-
   return (
     <View style={[sharedStyles.container, styles.container]}>
       <EditTimerModal timer={timer} visible={modalVisible} onSave={handleSave} onCancel={() => {setModalVisible(false)}}/>
@@ -98,7 +82,13 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
       </TouchableOpacity>
       <View style={styles.buttonRow}>
       <TouchableOpacity 
-        onPress={startTimer}
+        onPress={() => {onDataChange({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: true, 
+          length: timer.length, 
+          duration: timer.duration
+        })}}
         style={sharedStyles.roundButton}
       >
         <Image
