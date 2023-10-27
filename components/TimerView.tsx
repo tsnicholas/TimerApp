@@ -4,8 +4,7 @@ import { Text, View, Alert, TouchableOpacity, StyleSheet, Image, Vibration } fro
 import sharedStyles from "../styles";
 import { Timer } from "../types";
 import EditTimerModal from "../modals/EditTimerModal";
-import { Audio } from "expo-av";
-import alarm from "../assets/Alarm_Clock_Sound_Effect.mp3";
+import { Alarm } from "./alarm";
 
 interface TimerProps {
   timer: Timer,
@@ -14,7 +13,7 @@ interface TimerProps {
 
 export default function TimerView({timer, onDataChange} : TimerProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const sound = new Audio.Sound();
+  const alarm = new Alarm();
 
   useEffect(() => {
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
@@ -30,7 +29,7 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
   });
 
   function alert() {
-    playAlarm();
+    alarm.playAlarm();
     Vibration.vibrate(10, true);
     Alert.alert("Timer Finished!", `Time on ${timer.name} is up!`, [
       {
@@ -56,31 +55,10 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
     ]);
   }
   
-  async function playAlarm() {
-    console.log("Starting alarm.");
-    try {
-      await sound.loadAsync(alarm);
-      await sound.setIsLoopingAsync(true);
-      await sound.playAsync();
-    } catch(error) {
-      console.error("Unable to play alarm.", error);
-    }
-  }
-  
   function handleAlertButtonPressed(timer: Timer) {
-    stopAlarm();
+    alarm.stopAlarm();
     Vibration.cancel();
     onDataChange(timer);
-  }
-
-  async function stopAlarm() {
-    console.log("Stopping alarm.");
-    try {
-      await sound.stopAsync();
-      await sound.unloadAsync();
-    } catch(error) {
-      console.error("Unable to stop alarm.", error);
-    }
   }
 
   function onTimePasses() {
