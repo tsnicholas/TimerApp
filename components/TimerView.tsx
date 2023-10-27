@@ -55,7 +55,7 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
       }
     ]);
   }
-
+  
   async function playAlarm() {
     console.log("Starting alarm.");
     try {
@@ -66,7 +66,7 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
       console.error("Unable to play alarm.", error);
     }
   }
-
+  
   function handleAlertButtonPressed(timer: Timer) {
     stopAlarm();
     Vibration.cancel();
@@ -100,6 +100,22 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
     setModalVisible(false);
   }
 
+  function startTimer() {
+    if(IsValidNumbers()) {
+      Alert.alert("Invalid Input!", "Please enter an integer.");
+      return;
+    } else if(timer.length.minute == 0 && timer.length.second == 0) {
+      Alert.alert("Error!", "Timer must not be zero.");
+      return;
+    }
+    onDataChange({id: timer.id, name: timer.name, timerTurnedOn: true, length: timer.length, duration: timer.duration});
+  }
+  
+  function IsValidNumbers() {
+    const length = timer.length;
+    return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
+  }
+
   return (
     <View style={[sharedStyles.container, styles.container]}>
       <EditTimerModal timer={timer} visible={modalVisible} onSave={handleSave} onCancel={() => {setModalVisible(false)}}/>
@@ -111,76 +127,50 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
           {timer.length.minute.toString().padStart(2, "0")}:{timer.length.second.toString().padStart(2, "0")}
         </Text>
       </TouchableOpacity>
-      <Controls timer={timer} onDataChange={onDataChange}/>
+      <View style={styles.buttonRow}>
+      <TouchableOpacity 
+        onPress={startTimer}
+        style={sharedStyles.roundButton}
+      >
+        <Image
+          style={styles.playIcon}
+          source={require("../assets/play_icon.png")}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => {onDataChange({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: false, 
+          length: timer.length,
+          duration: timer.duration,
+        })}}
+        style={sharedStyles.roundButton}
+      >
+        <View style={styles.pauseIcon}>
+          <View style={styles.pauseStrip}></View>
+          <View style={styles.pauseStrip}></View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity 
+        onPress={() => {onDataChange({
+          id: timer.id, 
+          name: timer.name, 
+          timerTurnedOn: timer.timerTurnedOn, 
+          length: {minute: timer.duration.minute, second: timer.duration.second},
+          duration: timer.duration,
+        })}}
+        style={sharedStyles.roundButton}
+      >
+        <Image 
+          style={styles.resetIcon}
+          source={require("../assets/reset_icon.png")}
+        />
+      </TouchableOpacity>
+    </View>  
       <StatusBar style="auto"/>
     </View>
   );
-}
-
-function Controls({timer, onDataChange}: TimerProps) {
-  function startTimer() {
-    if(IsValidNumbers()) {
-      Alert.alert("Invalid Input!");
-      return;
-    }
-    onDataChange({id: timer.id, name: timer.name, timerTurnedOn: true, length: timer.length, duration: timer.duration});
-  }
-  
-  function IsValidNumbers() {
-    const length = timer.length;
-    return length.minute < 0 || Number.isNaN(length.minute) || length.second < 0 || length.second > 60 || Number.isNaN(length.second);
-  }
-  
-  if(timer.timerTurnedOn) {
-    return (
-      <View style={styles.buttonRow}>
-        <TouchableOpacity 
-          onPress={() => {onDataChange({
-            id: timer.id, 
-            name: timer.name, 
-            timerTurnedOn: false, 
-            length: timer.length,
-            duration: timer.duration,
-          })}}
-          style={sharedStyles.roundButton}
-        >
-          <View style={styles.pauseIcon}>
-            <View style={styles.pauseStrip}></View>
-            <View style={styles.pauseStrip}></View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          onPress={() => {onDataChange({
-            id: timer.id, 
-            name: timer.name, 
-            timerTurnedOn: timer.timerTurnedOn, 
-            length: {minute: timer.duration.minute, second: timer.duration.second},
-            duration: timer.duration,
-          })}}
-          style={sharedStyles.roundButton}
-        >
-          <Image 
-            style={styles.resetIcon}
-            source={require("../assets/reset_icon.png")}
-          />
-        </TouchableOpacity>
-      </View>  
-    );
-  } else {
-    return (
-      <View style={styles.buttonRow}>
-        <TouchableOpacity 
-          onPress={startTimer}
-          style={sharedStyles.roundButton}
-        >
-          <Image
-            style={styles.playIcon}
-            source={require("../assets/play_icon.png")}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
