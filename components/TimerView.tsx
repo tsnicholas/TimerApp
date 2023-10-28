@@ -5,6 +5,7 @@ import sharedStyles from "../styles";
 import { Timer } from "../custom_typings/types";
 import EditTimerModal from "../modals/EditTimerModal";
 import { Alarm } from "../alarm";
+import { getRandomColor } from "../utils";
 
 interface TimerProps {
   timer: Timer,
@@ -14,7 +15,8 @@ interface TimerProps {
 
 export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const [controlColor] = useState(getRandomColor());
+
   useEffect(() => {
     console.log("Timer View Re-rendering...");
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
@@ -122,7 +124,7 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
       <View style={styles.buttonRow}>
         <TouchableOpacity 
           onPress={startTimer}
-          style={sharedStyles.roundButton}
+          style={[sharedStyles.roundButton, {backgroundColor: controlColor}]}
         >
           <Image
             style={styles.playIcon}
@@ -137,7 +139,7 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
             length: timer.length,
             duration: timer.duration,
           })}}
-          style={sharedStyles.roundButton}
+          style={[sharedStyles.roundButton, {backgroundColor: controlColor}]}
         >
           <View style={styles.pauseIcon}>
             <View style={styles.pauseStrip}></View>
@@ -152,7 +154,7 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
             length: {minute: timer.duration.minute, second: timer.duration.second},
             duration: timer.duration,
           })}}
-          style={sharedStyles.roundButton}
+          style={[sharedStyles.roundButton, {backgroundColor: controlColor}]}
         >
           <Image 
             style={styles.resetIcon}

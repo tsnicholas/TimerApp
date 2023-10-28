@@ -74,9 +74,9 @@ export default function TimerSetScreen({route}: Props) {
             </ScrollView>
             <TouchableOpacity
                 onPress={() => {addTimer()}}
-                style={sharedStyles.roundButton}
+                style={[sharedStyles.roundButton, sharedStyles.plusButton]}
             >
-                <Text style={sharedStyles.plusButton}>+</Text>
+                <Text style={sharedStyles.plusIcon}>+</Text>
             </TouchableOpacity>
         </View>
     )

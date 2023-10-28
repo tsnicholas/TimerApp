@@ -4,10 +4,11 @@ const sharedStyles = StyleSheet.create({
     app: {
       flex: 1,
       paddingHorizontal: 20,
-      paddingVertical: 35,
+      paddingVertical: 25,
       backgroundColor: "#fff",
       alignItems: "center",
       justifyContent: "center",
+      gap: 5,
     },
     container: {
         flex: 1,
@@ -38,9 +39,11 @@ const sharedStyles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
         padding: 10,
-        backgroundColor: "#0a84ff",
     },
     plusButton: {
+        backgroundColor: "#0a84ff",
+    },
+    plusIcon: {
         fontSize: 20,
         color: "white",
         textAlign: "center",

@@ -59,9 +59,9 @@ export default function TimerSetsScreen() {
             </ScrollView>
             <TouchableOpacity
                 onPress={() => {setModalVisible(true)}}
-                style={sharedStyles.roundButton}
+                style={[sharedStyles.roundButton, sharedStyles.plusButton]}
             >
-                <Text style={sharedStyles.plusButton}>+</Text>
+                <Text style={sharedStyles.plusIcon}>+</Text>
             </TouchableOpacity>
         </View>
     )
