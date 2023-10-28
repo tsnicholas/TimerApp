@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, createContext, useContext, useState } from "react";
-import { TimerSet } from "../types";
+import { TimerSet } from "../custom_typings/types";
 
 const TimerSets = createContext<TimerSet[]>([]);
 const CreateTimerSet = createContext<(timerSet: TimerSet) => void>(() => {});

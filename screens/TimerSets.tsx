@@ -2,9 +2,9 @@ import React, { ReactElement, useState } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import TimerSetView from "../components/TimerSetView";
 import sharedStyles from "../styles";
-import { genid } from "../utils";
+import { genID } from "../utils";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParams, TimerSet } from "../types";
+import { RootStackParams, TimerSet } from "../custom_typings/types";
 import { useNavigation } from "@react-navigation/native";
 import { TitleText } from "../shared"
 import CreateTimeSetModal from "../modals/CreateTimeSetModal";
@@ -20,7 +20,7 @@ export default function TimerSetsScreen() {
         console.log("Creating new timer set...");
         setModalVisible(false);
         const newTimerSet = {
-            id: genid(),
+            id: genID(),
             name: name,
             timers: [],
         }

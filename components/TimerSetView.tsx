@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
-import { TimerSet } from "../types";
+import { TimerSet } from "../custom_typings/types";
 import sharedStyles from "../styles";
 
 interface TimerSetProps {

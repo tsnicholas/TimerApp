@@ -1,20 +1,22 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { RootStackParams, Timer } from "../types";
+import { RootStackParams, Timer } from "../custom_typings/types";
 import TimerView from "../components/TimerView";
 import sharedStyles from "../styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { genid } from "../utils";
+import { genID } from "../utils";
 import { useUpdateTimerSet } from "../contexts/TimerSetsContext";
+import { Alarm } from "../alarm";
 
 type Props = NativeStackScreenProps<RootStackParams, "TimerSet">;
 
 export default function TimerSetScreen({route}: Props) {
     const [timerSet, setTimerSet] = useState<Timer[]>(route.params.timerSet.timers);
     const timers: ReactElement[] = [];
+    const [alarm] = useState(new Alarm());
     const updateTimerSet = useUpdateTimerSet();
     let numOfTimers = timerSet.length;
-
+    
     useEffect(() => {
         console.log("Timer Set Screen Re-rendering...");
         updateTimerSet({id: route.params.timerSet.id, name: route.params.timerSet.name, timers: timerSet});
@@ -23,7 +25,7 @@ export default function TimerSetScreen({route}: Props) {
     function addTimer() {
         console.log("Creating a new timer...");
         const timer = {
-            id: genid(), 
+            id: genID(), 
             name: `Timer ${numOfTimers}`, 
             timerTurnedOn: false, 
             length: {minute: 0, second: 0}, 
@@ -31,10 +33,11 @@ export default function TimerSetScreen({route}: Props) {
         };
         // This will trigger a re-render unlike pushing or assigning a new array.
         setTimerSet(timerSet.concat([timer]));
-        console.log("Timer Created. Number of Timers: " + numOfTimers++);
+        console.log("Timer Created. Number of Timers: " + ++numOfTimers);
     }
 
     function onDataChangeRequest(inputTimer: Timer) {
+        console.log("Timer data is being updated.");
         setTimerSet(
             timerSet.map((timer: Timer) =>
                 inputTimer.id == timer.id ? inputTimer : timer
@@ -47,6 +50,7 @@ export default function TimerSetScreen({route}: Props) {
             <TimerView
                 key={`${timerSet[i].id}`}
                 timer={timerSet[i]}
+                alarm={alarm}
                 onDataChange={onDataChangeRequest}
             />
         );

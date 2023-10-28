@@ -2,22 +2,30 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, Alert, TouchableOpacity, StyleSheet, Image, Vibration } from "react-native";
 import sharedStyles from "../styles";
-import { Timer } from "../types";
+import { Timer } from "../custom_typings/types";
 import EditTimerModal from "../modals/EditTimerModal";
-import { Alarm } from "./alarm";
+import { Alarm } from "../alarm";
 
 interface TimerProps {
   timer: Timer,
+  alarm: Alarm,
   onDataChange: (inputTimer: Timer) => void,
 }
 
-export default function TimerView({timer, onDataChange} : TimerProps) {
+export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
   const [modalVisible, setModalVisible] = useState(false);
-  const alarm = new Alarm();
-
+  
   useEffect(() => {
     console.log("Timer View Re-rendering...");
     if(timer.length.minute <= 0 && timer.length.second <= 0 && timer.timerTurnedOn) {
+      // Prevents this method from being called twice when the TimerSetScreen re-renders.
+      onDataChange({
+        id: timer.id,
+        name: timer.name,
+        timerTurnedOn: false,
+        length: timer.length,
+        duration: timer.duration, 
+      });
       alert();
     } else if(timer.timerTurnedOn) {
       const id = setInterval(() => {
@@ -30,26 +38,28 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
   });
 
   function alert() {
+    console.log("Attempting to alert user...");
     alarm.playAlarm();
     Vibration.vibrate(10, true);
     Alert.alert("Timer Finished!", `Time on ${timer.name} is up!`, [
       {
         text: "Ok",
-        onPress: () => {() => {handleAlertButtonPressed({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: false, 
-          length: {minute: timer.duration.minute, second: timer.duration.second},
-          duration: timer.duration
-        })}}
+        onPress: (str?: string) => {handleAlertButtonPressed(str)}
       }
     ]);
   }
   
-  function handleAlertButtonPressed(timer: Timer) {
+  function handleAlertButtonPressed(str?: string) {
+    console.log(`Handling ${str} button being pressed...`);
     alarm.stopAlarm();
     Vibration.cancel();
-    onDataChange(timer);
+    onDataChange({
+      id: timer.id,
+      name: timer.name,
+      timerTurnedOn: false,
+      length: {minute: timer.duration.minute, second: timer.duration.second},
+      duration: timer.duration,
+    });
   }
 
   function onTimePasses() {
@@ -69,6 +79,21 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
     setModalVisible(false);
   }
 
+  function startTimer() {
+    if(timer.length.minute === 0 && timer.length.second === 0) {
+      Alert.alert("Error", "Can't start timer with value 00:00.");
+      return;
+    }
+
+    onDataChange({
+      id: timer.id, 
+      name: timer.name, 
+      timerTurnedOn: true, 
+      length: timer.length, 
+      duration: timer.duration
+    });
+  }
+
   return (
     <View style={[sharedStyles.container, styles.container]}>
       <EditTimerModal timer={timer} visible={modalVisible} onSave={handleSave} onCancel={() => {setModalVisible(false)}}/>
@@ -81,52 +106,46 @@ export default function TimerView({timer, onDataChange} : TimerProps) {
         </Text>
       </TouchableOpacity>
       <View style={styles.buttonRow}>
-      <TouchableOpacity 
-        onPress={() => {onDataChange({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: true, 
-          length: timer.length, 
-          duration: timer.duration
-        })}}
-        style={sharedStyles.roundButton}
-      >
-        <Image
-          style={styles.playIcon}
-          source={require("../assets/play_icon.png")}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity 
-        onPress={() => {onDataChange({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: false, 
-          length: timer.length,
-          duration: timer.duration,
-        })}}
-        style={sharedStyles.roundButton}
-      >
-        <View style={styles.pauseIcon}>
-          <View style={styles.pauseStrip}></View>
-          <View style={styles.pauseStrip}></View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        onPress={() => {onDataChange({
-          id: timer.id, 
-          name: timer.name, 
-          timerTurnedOn: timer.timerTurnedOn, 
-          length: {minute: timer.duration.minute, second: timer.duration.second},
-          duration: timer.duration,
-        })}}
-        style={sharedStyles.roundButton}
-      >
-        <Image 
-          style={styles.resetIcon}
-          source={require("../assets/reset_icon.png")}
-        />
-      </TouchableOpacity>
-    </View>  
+        <TouchableOpacity 
+          onPress={startTimer}
+          style={sharedStyles.roundButton}
+        >
+          <Image
+            style={styles.playIcon}
+            source={require("../assets/play_icon.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => {onDataChange({
+            id: timer.id, 
+            name: timer.name, 
+            timerTurnedOn: false, 
+            length: timer.length,
+            duration: timer.duration,
+          })}}
+          style={sharedStyles.roundButton}
+        >
+          <View style={styles.pauseIcon}>
+            <View style={styles.pauseStrip}></View>
+            <View style={styles.pauseStrip}></View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => {onDataChange({
+            id: timer.id, 
+            name: timer.name, 
+            timerTurnedOn: timer.timerTurnedOn, 
+            length: {minute: timer.duration.minute, second: timer.duration.second},
+            duration: timer.duration,
+          })}}
+          style={sharedStyles.roundButton}
+        >
+          <Image 
+            style={styles.resetIcon}
+            source={require("../assets/reset_icon.png")}
+          />
+        </TouchableOpacity>
+      </View>  
       <StatusBar style="auto"/>
     </View>
   );

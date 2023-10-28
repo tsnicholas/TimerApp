@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Platform, Button, StyleSheet, Modal, Alert } from "react-native";
-import { Duration, Timer } from "../types";
+import { Duration, Timer } from "../custom_typings/types";
 import { AvoidingView } from "../shared";
 import sharedStyles from "../styles";
 

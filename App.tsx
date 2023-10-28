@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import TimerSetsScreen from "./screens/TimerSets";
 import TimerSetScreen from "./screens/TimerSet";
-import { RootStackParams } from "./types";
+import { RootStackParams } from "./custom_typings/types";
 import { TimerSetsProvider } from "./contexts/TimerSetsContext";
 
 const Stack = createStackNavigator<RootStackParams>();

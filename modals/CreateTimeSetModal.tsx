@@ -17,7 +17,7 @@ export default function CreateTimeSetModal({visible, onSave, onCancel}: CreateTi
             onSave(newName);
             return;
         }
-        Alert.alert("Error", "Please enter a name.");
+        Alert.alert("Invalid Input", "Please enter a name.");
     }
 
     return(
