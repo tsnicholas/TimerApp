@@ -55,11 +55,11 @@ export default function TimerSetScreen({route}: Props) {
         );
     }
     
-    for(let i = 0; i < numOfTimers; i++) {
+    for(const timer of timerSet) {
         timers.push(
             <TimerView
-                key={`${timerSet[i].id}`}
-                timer={timerSet[i]}
+                key={`${timer.id}`}
+                timer={timer}
                 alarm={alarm}
                 onDataChange={onDataChangeRequest}
             />
