@@ -50,7 +50,9 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
           timerTurnedOn: false,
           length: timer.length,
           duration: timer.duration,
-        }, str)}
+        }, str)},
+        style: 'default',
+        isPreferred: true,
       },
       {
         text: "Reset",
@@ -60,8 +62,10 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
           timerTurnedOn: true,
           length: {minute: timer.duration.minute, second: timer.duration.second},
           duration: timer.duration,
-        }, str)}
-      }
+        }, str)},
+        style: 'default',
+        isPreferred: false,
+      },
     ]);
   }
   

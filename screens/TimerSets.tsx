@@ -19,9 +19,11 @@ export default function TimerSetsScreen() {
     function handleSave(name: string) {
         console.log("Creating new timer set...");
         setModalVisible(false);
+        const currentDate = new Date();
         const newTimerSet = {
             id: genID(),
             name: name,
+            lastUsed: `Last Used: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`,
             timers: [],
         }
         createTimerSet(newTimerSet);

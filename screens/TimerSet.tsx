@@ -23,7 +23,13 @@ export default function TimerSetScreen({route}: Props) {
     
     useEffect(() => {
         console.log("Timer Set Screen Re-rendering...");
-        updateTimerSet({id: route.params.timerSet.id, name: route.params.timerSet.name, timers: timerSet});
+        const currentDate = new Date();
+        updateTimerSet({
+            id: route.params.timerSet.id, 
+            name: route.params.timerSet.name, 
+            lastUsed: `Last Used: ${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`, 
+            timers: timerSet
+        });
     }, [timerSet]);
 
     function addTimer() {

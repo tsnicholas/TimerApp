@@ -14,6 +14,7 @@ export interface Timer {
 export interface TimerSet {
     id: string;
     name: string;
+    lastUsed: string;
     timers: Timer[];
 }
 
