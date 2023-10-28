@@ -16,6 +16,10 @@ export default function TimerSetScreen({route}: Props) {
     const [alarm] = useState(new Alarm());
     const updateTimerSet = useUpdateTimerSet();
     let numOfTimers = timerSet.length;
+
+    useEffect(() => {
+        alarm.loadAlarm();
+    }, []);
     
     useEffect(() => {
         console.log("Timer Set Screen Re-rendering...");

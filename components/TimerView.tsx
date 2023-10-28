@@ -44,22 +44,32 @@ export default function TimerView({timer, alarm, onDataChange} : TimerProps) {
     Alert.alert("Timer Finished!", `Time on ${timer.name} is up!`, [
       {
         text: "Ok",
-        onPress: (str?: string) => {handleAlertButtonPressed(str)}
+        onPress: (str?: string) => {handleAlertButtonPressed({
+          id: timer.id,
+          name: timer.name,
+          timerTurnedOn: false,
+          length: timer.length,
+          duration: timer.duration,
+        }, str)}
+      },
+      {
+        text: "Reset",
+        onPress: (str?: string) => {handleAlertButtonPressed({
+          id: timer.id,
+          name: timer.name,
+          timerTurnedOn: true,
+          length: {minute: timer.duration.minute, second: timer.duration.second},
+          duration: timer.duration,
+        }, str)}
       }
     ]);
   }
   
-  function handleAlertButtonPressed(str?: string) {
-    console.log(`Handling ${str} button being pressed...`);
+  function handleAlertButtonPressed(timer: Timer, str?: string) {
+    console.log(str === undefined ? "Handling alert button being pressed..." : `Handling ${str} button being pressed...`);
     alarm.stopAlarm();
     Vibration.cancel();
-    onDataChange({
-      id: timer.id,
-      name: timer.name,
-      timerTurnedOn: false,
-      length: {minute: timer.duration.minute, second: timer.duration.second},
-      duration: timer.duration,
-    });
+    onDataChange(timer);
   }
 
   function onTimePasses() {
